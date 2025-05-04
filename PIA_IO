@@ -1,0 +1,214 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{pgfplots}
+\usepackage{csquotes}
+\usepackage{ragged2e}
+\usepackage{multirow}
+\graphicspath{{images/}}
+\pgfplotsset{compat=1.18} 
+\usepackage{multicol}
+\usepackage{cite}
+\usepackage{blindtext}
+\rmfamily
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\headheight}{35.5pt}
+\fancyhead[L]{\includegraphics[width=2.5cm]{R (2) (1) (1).png}}
+\fancyhead[R]{\includegraphics[width=2cm]{R (3) (1) (1).png}}
+\begin{document}
+\begin{titlepage}
+\thispagestyle{fancy}
+\centering
+\vspace{1cm}
+
+{\bfseries\LARGE Universidad Autónoma de Nuevo León \par}
+\vspace{1cm}
+{\scshape\Large Facultad de Ciencias Físico Matemáticas \par}
+\vspace{3cm}
+TEORÍA DE COLAS\\
+\vspace{3cm}
+{\itshape\Large PIA Investigación de operaciones: \\"Modelo de múltiples entradas y una salida" \par}
+\vspace{4cm}
+{\Large Autor:  \par}
+{\Large Capistrán Fuentes Renata [LM, 2079992] \par}
+\vspace{3cm}
+{\Large Mayo, 2025 \par}
+\end{titlepage}
+\section{Introducción}
+En este proyecto estaremos trabajando el tema de la teoría de colas dando un panorama general de lo que estudia, sus características, datos de interés, aplicaciones e incluso daremos el planteamiento de una de las variantes de situaciones de interés para esta área de investigación, un ejercicio de múltiples entradas y una sola salida.
+\section{Generalidades}
+Empezamos por identificar qué es un sistema de colas, éste consiste en:\\
+\begin{itemize}
+    \item Llegada de clientes 
+    \item Espera de servicio
+    \item Salida del sistema
+\end{itemize}
+Con este sistema como base se busca optimizar los procesos y reducir los tiempos de espera para cada cliente. Los factores a considerar son los siguientes:\\
+\begin{itemize}
+    \item $\lambda$ : Tasa de llegada de los clientes (por unidad de tiempo)
+    \item $\mu$ : Tasa de servicio promedio del servidor (por unidad de tiempo).
+    \item $\rho$ : Tiempo que el servidor está ocupado dado por: $\rho = \frac{\lambda}{\mu}$
+    \item L :promedio de clientes en el sistema (en cola + en servicio).
+    \item Lq :Número promedio de clientes esperando en la cola.
+    \item W :Tiempo promedio que un cliente pasa en el sistema.
+    \item Wq :Tiempo promedio que un cliente pasa esperando en la cola.
+    \item $\rho_0$ :Probabilidad de que no haya clientes en el sistema (estado vacío).
+    \item n : número de servidores
+\end{itemize}
+Los casos que se estudian en esta área se separan en categorías dependiendo de:
+el proceso de llegada, proceso de servicio, número de servidores, disciplina de atención (decidir como se atienden los clientes) y la capacidad del sistema. En la literatura podemos encontrarlos con la notación $A/B/c/K/N/d$ donde A corresponde a la distribución del orden de llegada, B es el tipo de distribución en el orden de servicio, c es el número de servidores, K es la capacidad del sistema permitidas en el sistema al mismo tiempo, N el tamaño de la población y d es la disciplina de la cola. A continuación dejamos una tabla de notación en la literatura usual.\\\includegraphics[width=16.5cm]{chart.png} \\Algunos de los ejemplos que se pueden encontrar son ejercicios de la forma:\\
+\begin{itemize}
+    \item $M/M/1$
+    \item $M/M/c$
+    \item $M/G/1$
+    \item $G/M/1$
+    \item $G/G/1$
+\end{itemize}
+
+\section{Ejercicio}
+A continuación analizaremos una situación de \textit{una cafetería donde los clientes llegan con frecuencia Poisson $\lambda$ = 12 clientes por hora. Se dispone de 3 cajas para tomar pedidos donde cada cajero puede atender a una velocidad promedio de 4 minutos por cliente. Luego de ordenar, los clientes pasan a una barra de preparación donde 1 barista prepara todas las órdenes. El barista tarda 5 minutos en promedio por orden.}\\ \\
+\textbf{Análisis}\\Note que esta situación se divide en 2 fases diferentes, la primera es donde los clientes se disponen a pagar por sus productos en las cajas y la segunda es cuando recibiran el producto del barista.\\ 
+\underline{Fase 1}: Cajas (Toma de pedido)\\ \\Datos:\\ 
+\begin{itemize}
+    \item Tasa de llegada de clientes: $\lambda = 12$ clientes por hora
+    \item Tasa de servicio por caja: $\mu = \frac{1}{4}$ clientes por minuto (4 minutos por cliente)
+    \item Número de servidores (cajas): $n = 3$
+    \item Tasa de utilización (\(\rho_1\)):
+    \[
+    \rho_1 = \frac{\lambda}{n \mu}
+    \]
+    donde \( n = 3 \) es el número de servidores.
+    
+    \item Probabilidad de que no haya clientes en el sistema (\(\rho_0\)):
+    \[
+    \rho_0 = \frac{1}{\sum_{k=0}^{n-1} \frac{(\lambda / \mu)^k}{k!} + \frac{(\lambda / \mu)^n}{n! (1 - \rho_1)}}
+    \]
+    
+    \item Número promedio de clientes en el sistema (\(L_1\)):
+    \[
+    L_1 = \frac{\lambda}{\mu - \lambda} \left( \frac{(\lambda / \mu)^n}{n! (1 - \rho_1)^2} \right)
+    \]
+    
+    \item Número promedio de clientes en la cola (\(L_{q1}\)):
+    \[
+    L_{q1} = L_1 - \frac{\lambda}{\mu - \lambda} \left( \frac{(\lambda / \mu)^n}{n! (1 - \rho_1)^2} \right)
+    \]
+    
+    \item Tiempo promedio en el sistema (\(W_1\)) en horas:
+    \[
+    W_1 = \frac{L_1}{\lambda}
+    \]
+    
+    \item Tiempo promedio en la cola (\(W_{q1}\)) en horas:
+    \[
+    W_{q1} = \frac{L_{q1}}{\lambda}
+    \]
+\end{itemize}
+
+\textbf{Resultados para la Fase 1:}
+
+\[
+\rho_1 = \frac{12}{3 \times 15} = 0.2673
+\]
+\[
+\rho_0 = 0.6922
+\]
+\[
+L_1 = 0.5251
+\]
+\[
+L_{q1} = 0.2677
+\]
+\[
+W_1 = 0.0438 horas \quad (2.63 minutos)
+\]
+\[
+W_{q1} = 0.0223 horas \quad (1.34 minutos)
+\]
+ \\
+\underline{Fase 2}: Barra de preparación \\ Datos:
+\begin{itemize}
+    \item Tasa de llegada al barista: $\lambda_2 = 12$ clientes por hora (igual que la tasa de salida de la fase 1)
+    \item Tasa de servicio del barista: $\mu_2 = \frac{1}{5}$ clientes por minuto (5 minutos por cliente)
+    \item Número de servidores (baristas): $n_2 = 1$
+    \item Tasa de utilización (\(\rho_2\)):
+    \[
+    \rho_2 = \frac{\lambda_2}{\mu_2}
+    \]
+    
+    \item Número promedio de clientes en el sistema (\(L_2\)):
+    \[
+    L_2 = \frac{\lambda_2}{\mu_2 - \lambda_2}
+    \]
+    
+    \item Número promedio de clientes en la cola (\(L_{q2}\)):
+    \[
+    L_{q2} = \frac{\lambda_2^2}{\mu_2 (\mu_2 - \lambda_2)}
+    \]
+    
+    \item Tiempo promedio en el sistema (\(W_2\)) en horas:
+    \[
+    W_2 = \frac{1}{\mu_2 - \lambda_2}
+    \]
+    
+    \item Tiempo promedio en la cola (\(W_{q2}\)) en horas:
+    \[
+    W_{q2} = \frac{\lambda_2}{\mu_2 (\mu_2 - \lambda_2)}
+    \]
+    \end{itemize}
+Por los datos anteriores estamos hablando de un sistema $M/M/1$.\\
+\textbf{Resultados para la Fase 2:}\\
+$\rho_2 = \frac{12}{12} = 1.0000$\\
+$L_2 = \frac{12}{12 - 12}$ (Sistema saturado, no hay solución numérica válida)\\
+$L_{q2} = \frac{12^2}{12 \times (12 - 12)}$  (Sistema saturado, no hay solución numérica válida)\\
+$W_2 = \frac{1}{12 - 12}$ (Sistema saturado, no hay solución numérica válida)\\
+$W_{q2} = \frac{12}{12 \times (12 - 12)}$  (Sistema saturado, no hay solución numérica válida)\\
+\\Esto indica que el sistema de preparación está saturado, ya que la tasa de llegada es igual a la tasa de servicio, lo que da lugar a tiempos de espera infinitos.
+\\ \\ 
+\textbf{Conclusiones}
+\\Tome en cuenta la siguiente tabla de valores:
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|}
+\hline
+\textbf{$\rho$ (Utilización)} & \textbf{Interpretación} \\
+\hline
+$0.00 - 0.70$ & Ideal: el sistema trabaja rápido, mínima espera. \\
+\hline
+$0.70 - 0.85$ & Aceptable: posibles filas moderadas en horas pico. \\
+\hline
+$0.85 - 0.95$ & Riesgoso: altas probabilidades de congestión. \\
+\hline
+$0.95 - 1.00$ & Crítico: el sistema está prácticamente saturado. \\
+\hline
+\end{tabular}
+\caption{Clasificación de la utilización $\rho$ en teoría de colas.}
+\end{table}
+\\ Para la fase 1 vemos que tenemos cajas de sobra para evitar una congestión, incluso podríamos reducir la cantidad de cajas a 2 y aún así no habría un riesgo de contención, por el contrario en la fase 2 podemos visualizar que el sistema está en estado de congestión por lo que para optimizar sería necesario contratar otro barista, por lo que en una cafetería no es óptimo utilizar un sistema de múltiples entradas y una sola salida.
+\section{Fuentes de Apoyo}
+\begin{thebibliography}{9}
+
+\bibitem{castillo2015}
+Castillo, J. M. (2015). *Apuntes de Teoría de Colas, Simulación y Análisis de Sistemas de Espera*. ResearchGate. Recuperado de \url{https://www.researchgate.net/publication/277749574_Apuntes_de_Teoria_de_Colas_Simulacion_y_Analisis_de_Sistemas_de_Espera}
+
+\bibitem{gross2013}
+Gross, D., \& Harris, C. M. (2013). *Fundamentals of Queueing Theory* (4th ed.). Wiley. Recuperado de \url{https://doi.org/10.1002/9780470400531.eorms0878}
+
+\bibitem{bose2013}
+Bose, S. K. (2013). *An introduction to queueing systems*. Springer Science \& Business Media.
+
+\bibitem{white2012}
+White, J. A. (2012). *Analysis of queueing systems*. Elsevier.
+
+\end{thebibliography}
+
+
+\end{thebibliography}
+\end{document}
